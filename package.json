@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "dev": "nodemon index.js"
   },
   "author": "",
@@ -21,5 +22,8 @@
     "mongoose": "^6.0.10",
     "nodemon": "^2.0.13",
     "uuid": "^8.3.2"
+  },
+  "engines": {
+    "node": ">=10.0.0"
   }
 }
