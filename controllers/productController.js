@@ -60,3 +60,12 @@ module.exports.addProduct = (req, res) => {
     }
   });
 };
+
+module.exports.getProduct = async (req, res) => {
+  try {
+    const response = await Product.find();
+    res.status(200).send(response);
+  } catch (error) {
+    console.log(error);
+  }
+};
