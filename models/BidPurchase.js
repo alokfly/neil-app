@@ -1,7 +1,15 @@
 const { model, Schema } = require("mongoose");
 const bidPurchaseSchema = new Schema(
   {
-    subscription_price: {
+    user_id: {
+      type: String,
+      required: true,
+    },
+    product_id: {
+      type: String,
+      required: true,
+    },
+    bid: {
       type: Number,
       required: true,
     },

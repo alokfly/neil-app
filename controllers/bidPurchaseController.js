@@ -1,13 +1,19 @@
 const BidPurchase = require("../models/BidPurchase");
+require("dotenv").config();
 
 module.exports.bidPurchase = async (req, res) => {
-  const { subscription_price } = req.body;
-  try {
-    const bid = await BidPurchase.create({
-      subscription_price,
-    });
-    return res.status(200).json({ msg: "You successfully subscribed" });
-  } catch (error) {
-    return res.status(500).json({ errors: error });
+  if (req.headers && req.headers.authorization) {
+    var authorization = req.headers.authorization.split("Bearer ")[1];
+    try {
+      const decoded = jwt.verify(authorization, process.env.SECRET);
+      console.log(decoded);
+    } catch (e) {
+      console.log(e);
+      return res.status(401).send("unauthorized");
+    }
   }
+};
+
+module.exports.home = async (req, res) => {
+  return res.status(200).send("home");
 };

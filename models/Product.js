@@ -1,11 +1,15 @@
 const { model, Schema } = require("mongoose");
 const productSchema = new Schema(
   {
-    image: {
+    productName: {
       type: String,
       required: true,
     },
-    product_name: {
+    size: {
+      type: String,
+      required: true,
+    },
+    description: {
       type: String,
       required: true,
     },
@@ -13,16 +17,8 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
-    shoe_size: {
-      type: String,
-      required: true,
-    },
-    like: {
-      type: String,
-      required: true,
-    },
-    reminder: {
-      type: String,
+    image: {
+      type: Array,
       required: true,
     },
   },
