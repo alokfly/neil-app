@@ -1,7 +1,7 @@
 const formidable = require("formidable");
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
-
+var ObjectId = require("mongodb").ObjectID;
 const Product = require("../models/Product");
 
 module.exports.addProduct = async (req, res) => {
@@ -35,7 +35,7 @@ module.exports.updateProduct = async (req, res) => {
   let { productName, size, description, time } = req.body;
   try {
     const response = await Product.findByIdAndUpdate(
-      { _id: id },
+      { _id: ObjectId(req.params.id) },
       {
         productName,
         size,
@@ -52,7 +52,9 @@ module.exports.updateProduct = async (req, res) => {
 module.exports.deleteProduct = async (req, res) => {
   const id = req.params.id;
   try {
-    const response = await Product.findByIdAndDelete(id);
+    const response = await Product.findByIdAndDelete({
+      _id: ObjectId(req.params.id),
+    });
     res.status(200).send({ msg: "Product deleted successfully" });
   } catch (error) {
     console.log(error);
