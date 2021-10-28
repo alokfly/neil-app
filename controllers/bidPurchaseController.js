@@ -8,7 +8,6 @@ const JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN;
 
 module.exports.bidPurchase = async (req, res) => {
   const accessToken = req.cookies.accessToken;
-  const productId = req.params.id;
   const { bid, productId } = req.body;
   if (accessToken) {
     jwt.verify(accessToken, JWT_AUTH_TOKEN, async (err, email) => {
