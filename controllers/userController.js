@@ -5,6 +5,11 @@ const fs = require("fs");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+
+const JWT_AUTH_TOKEN = process.env.JWT_AUTH_TOKEN;
+const JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN;
+let refreshTokens = [];
+let accessTokens = [];
 const User = require("../models/User");
 const createToken = (user) => {
   return jwt.sign({ user }, process.env.SECRET, {
@@ -92,10 +97,35 @@ module.exports.login = async (req, res) => {
     if (user) {
       const matched = await bcrypt.compare(password, user.password);
       if (matched) {
-        const token = createToken(user);
-        return res
-          .status(200)
-          .json({ msg: "You have login successfully", token });
+        const accessToken = jwt.sign({ data: email }, JWT_AUTH_TOKEN, {
+          expiresIn: "1y",
+        });
+        const refreshToken = jwt.sign({ data: email }, JWT_REFRESH_TOKEN, {
+          expiresIn: "1y",
+        });
+        refreshTokens.push(refreshToken);
+        accessTokens.push(accessToken);
+        res
+          .status(202)
+          .cookie("accessToken", accessToken, {
+            expires: new Date(new Date().getTime() + 31557600000),
+            sameSite: "strict",
+            httpOnly: true,
+          })
+          .cookie("refreshToken", refreshToken, {
+            expires: new Date(new Date().getTime() + 31557600000),
+            sameSite: "strict",
+            httpOnly: true,
+          })
+          .cookie("authSession", true, {
+            expires: new Date(new Date().getTime() + 31557600000),
+            sameSite: "strict",
+          })
+          .cookie("refreshTokenID", true, {
+            expires: new Date(new Date().getTime() + 31557600000),
+            sameSite: "strict",
+          })
+          .send({ msg: "Login Successfull" });
       } else {
         return res
           .status(401)
@@ -107,6 +137,24 @@ module.exports.login = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ errors: error });
   }
+};
+
+module.exports.authenticateUser = async = (req, res, next) => {
+  const accessToken = req.cookies.accessToken;
+  jwt.verify(accessToken, JWT_AUTH_TOKEN, async (err, email) => {
+    if (email) {
+      req.email = email;
+      next();
+    } else if (err.message === "TokenExpiredError") {
+      return res.status(403).send({
+        success: false,
+        msg: "Access token expired",
+      });
+    } else {
+      console.log(err);
+      return res.status(403).send({ err, msg: "User not authenticated" });
+    }
+  });
 };
 
 module.exports.updateUser = async (req, res) => {
@@ -203,4 +251,13 @@ module.exports.updateUserImage = (req, res) => {
       });
     }
   });
+};
+
+module.exports.logout = async = (req, res) => {
+  res
+    .clearCookie("refreshToken")
+    .clearCookie("accessToken")
+    .clearCookie("authSession")
+    .clearCookie("refreshTokenID")
+    .send("logout");
 };

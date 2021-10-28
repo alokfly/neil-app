@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const connect = require("./config/db");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const router = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
@@ -8,6 +9,9 @@ const bidPurchaseRoutes = require("./routes/bidPurchaseRoutes");
 
 require("dotenv").config();
 const app = express();
+
+app.use(cors({ origin: "http://localhost:5000", credentials: true }));
+app.use(cookieParser());
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
