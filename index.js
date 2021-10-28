@@ -6,11 +6,12 @@ const cors = require("cors");
 const router = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const bidPurchaseRoutes = require("./routes/bidPurchaseRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 require("dotenv").config();
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5000", credentials: true }));
+app.use(cors());
 app.use(cookieParser());
 
 app.use(cors());
@@ -31,6 +32,7 @@ app.use(bodyParser.json());
 app.use("/", router);
 app.use("/", productRoutes);
 app.use("/", bidPurchaseRoutes);
+app.use("/", adminRoutes);
 
 const PORT = process.env.PORT || 5000;
 
