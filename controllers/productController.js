@@ -24,7 +24,7 @@ module.exports.addProduct = async (req, res) => {
 module.exports.getProduct = async (req, res) => {
   try {
     const response = await Product.find();
-    res.status(200).send(response);
+    res.status(200).json({ data: response });
   } catch (error) {
     console.log(error);
   }
