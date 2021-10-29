@@ -97,35 +97,7 @@ module.exports.login = async (req, res) => {
     if (user) {
       const matched = await bcrypt.compare(password, user.password);
       if (matched) {
-        const accessToken = jwt.sign({ data: email }, JWT_AUTH_TOKEN, {
-          expiresIn: "1y",
-        });
-        const refreshToken = jwt.sign({ data: email }, JWT_REFRESH_TOKEN, {
-          expiresIn: "1y",
-        });
-        refreshTokens.push(refreshToken);
-        accessTokens.push(accessToken);
-        res
-          .status(202)
-          .cookie("accessToken", accessToken, {
-            expires: new Date(new Date().getTime() + 31557600000),
-            sameSite: "strict",
-            httpOnly: true,
-          })
-          .cookie("refreshToken", refreshToken, {
-            expires: new Date(new Date().getTime() + 31557600000),
-            sameSite: "strict",
-            httpOnly: true,
-          })
-          .cookie("authSession", true, {
-            expires: new Date(new Date().getTime() + 31557600000),
-            sameSite: "strict",
-          })
-          .cookie("refreshTokenID", true, {
-            expires: new Date(new Date().getTime() + 31557600000),
-            sameSite: "strict",
-          })
-          .send({ msg: "Login Successfull" });
+        return res.status(200).json({ msg: "Login Successfull", data: email });
       } else {
         return res
           .status(401)
