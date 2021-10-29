@@ -51,7 +51,12 @@ module.exports.login = async (req, res) => {
     if (user) {
       const matched = await bcrypt.compare(password, user.password);
       if (matched) {
-        res.send({ msg: "Login Successfull", response: matched });
+        const { _id } = user;
+        updateSuccessCode = await Admin.findByIdAndUpdate(_id, {
+          sucessCode: 1,
+        });
+        const upadtedUser = await Admin.findOne({ email });
+        res.send({ msg: "Login Successfull", response: upadtedUser });
       } else {
         return res
           .status(401)

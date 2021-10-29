@@ -7,6 +7,7 @@ const router = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const bidPurchaseRoutes = require("./routes/bidPurchaseRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const subscriptionRoutes = require("./routes/subscriptionRoutes");
 
 require("dotenv").config();
 const app = express();
@@ -33,6 +34,7 @@ app.use("/", router);
 app.use("/", productRoutes);
 app.use("/", bidPurchaseRoutes);
 app.use("/", adminRoutes);
+app.use("/", subscriptionRoutes);
 
 const PORT = process.env.PORT || 5000;
 
