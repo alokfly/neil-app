@@ -22,6 +22,22 @@ module.exports.bidPurchase = async (req, res) => {
   }
 };
 
+module.exports.bidPurchase = async (req, res) => {
+  const { bid, productId, email } = req.body;
+  try {
+    const { _id } = await User.findOne({ email });
+    console.log(_id);
+    const addBid = BidPurchase.create({
+      user_id: _id,
+      product_id: productId,
+      bid,
+    });
+    return res.status(200).send({ msg: "Bid successfully placed" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports.home = async (req, res) => {
   return res.status(200).send("home");
 };

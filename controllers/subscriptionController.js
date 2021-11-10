@@ -1,4 +1,5 @@
 const Subscription = require("../models/Susbcription");
+const UserSubscription = require("../models/UserSubscription");
 var ObjectId = require("mongodb").ObjectID;
 
 module.exports.addSubscription = async (req, res) => {
@@ -47,5 +48,20 @@ module.exports.deleteSubscription = async (req, res) => {
     res.status(200).send({ msg: "Subscription deleted successfully" });
   } catch (error) {
     console.log(error);
+  }
+};
+
+module.exports.addUserSubscription = async (req, res) => {
+  const { subscriptionId, email, bidNumber, bidPrice } = req.body;
+  try {
+    const userSubs = await UserSubscription.create({
+      subscriptionId,
+      email,
+      bidNumber,
+      bidPrice,
+    });
+    res.status(200).json({ msg: "subscription successfully purchased" });
+  } catch (error) {
+    res.status(400).json(error);
   }
 };

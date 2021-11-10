@@ -1,5 +1,6 @@
 const { body, validationResult } = require("express-validator");
 const formidable = require("formidable");
+var ObjectId = require("mongodb").ObjectID;
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
 const bcrypt = require("bcrypt");
@@ -8,6 +9,7 @@ require("dotenv").config();
 
 const Admin = require("../models/Admin");
 const Otp = require("../models/Otp");
+const Bid = require("../models/Bid");
 
 const createToken = (user) => {
   return jwt.sign({ user }, process.env.SECRET, {
@@ -138,4 +140,51 @@ const mailer = (email, otp) => {
       console.log("Email sent: " + info.response);
     }
   });
+};
+
+module.exports.addBidAdmin = async (req, res) => {
+  const { bid } = req.body;
+  try {
+    const addBid = Bid.create({
+      bid,
+    });
+    return res.status(200).send({ msg: "Bid added successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.getBidDetail = async (req, res) => {
+  try {
+    const response = await Bid.find();
+    return res.status(200).send(response);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.updateBid = async (req, res) => {
+  let { bid } = req.body;
+  try {
+    const response = await Bid.findByIdAndUpdate(
+      { _id: ObjectId(req.params.id) },
+      {
+        bid,
+      }
+    );
+    res.status(200).send({ msg: "bid successfully updated" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.deleteBid = async (req, res) => {
+  try {
+    const response = await Bid.findByIdAndDelete({
+      _id: ObjectId(req.params.id),
+    });
+    res.status(200).send({ msg: "Bid deleted successfully" });
+  } catch (error) {
+    console.log(error);
+  }
 };
