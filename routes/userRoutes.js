@@ -11,6 +11,7 @@ const {
   updateUser,
   updateUserImage,
   logout,
+  getUser,
 } = require("../controllers/userController");
 router.post("/register", registerValiations, register);
 router.post("/login", loginValiations, login);
@@ -19,4 +20,5 @@ router.post("/change-password", changePassword);
 router.get("/logout", logout);
 router.post("/update-user/:id", auth, updateUser);
 router.post("/update-user-image/:id", auth, updateUserImage);
+router.get("/getUser", getUser);
 module.exports = router;

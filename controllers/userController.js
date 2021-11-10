@@ -296,11 +296,20 @@ module.exports.updateUserImage = (req, res) => {
   });
 };
 
-module.exports.logout = async = (req, res) => {
+module.exports.logout = async (req, res) => {
   res
     .clearCookie("refreshToken")
     .clearCookie("accessToken")
     .clearCookie("authSession")
     .clearCookie("refreshTokenID")
     .send("logout");
+};
+
+module.exports.getUser = async (req, res) => {
+  try {
+    const response = await User.find();
+    res.status(200).json({ data: response });
+  } catch (error) {
+    console.log(error);
+  }
 };
