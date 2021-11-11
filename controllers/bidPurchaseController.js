@@ -10,29 +10,30 @@ module.exports.bidPurchase = async (req, res) => {
   const { bid, productId, email } = req.body;
   try {
     const { _id } = await User.findOne({ email });
-    console.log(_id);
-    const addBid = BidPurchase.create({
-      user_id: _id,
+    const getBid = await BidPurchase.findOne({
       product_id: productId,
-      bid,
+      user_id: _id,
     });
-    return res.status(200).send({ msg: "Bid successfully placed" });
-  } catch (error) {
-    console.log(error);
-  }
-};
+    if (getBid) {
+      const placedBid = getBid.bid;
+      const data = await BidPurchase.findOneAndUpdate(
+        { product_id: productId, user_id: _id },
+        {
+          bid: placedBid + bid,
+        },
+        { upsert: true, new: true, setDefaultsOnInsert: true }
+      );
+    } else {
+      const data = await BidPurchase.findOneAndUpdate(
+        { product_id: productId, user_id: _id },
+        {
+          bid,
+        },
+        { upsert: true, new: true, setDefaultsOnInsert: true }
+      );
+    }
 
-module.exports.bidPurchase = async (req, res) => {
-  const { bid, productId, email } = req.body;
-  try {
-    const { _id } = await User.findOne({ email });
-    console.log(_id);
-    const addBid = BidPurchase.create({
-      user_id: _id,
-      product_id: productId,
-      bid,
-    });
-    return res.status(200).send({ msg: "Bid successfully placed" });
+    return res.status(200).send({ msg: "bid placed successfully" });
   } catch (error) {
     console.log(error);
   }
