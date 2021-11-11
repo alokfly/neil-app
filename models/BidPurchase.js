@@ -5,6 +5,10 @@ const bidPurchaseSchema = new Schema(
       type: String,
       required: true,
     },
+    username: {
+      type: String,
+      required: true,
+    },
     product_id: {
       type: String,
       required: true,
