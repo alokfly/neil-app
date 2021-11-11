@@ -8,6 +8,6 @@ const {
   showBidPurchase,
 } = require("../controllers/bidPurchaseController");
 router.post("/bidPurchase", bidPurchase);
-router.post("/showBidPurchase", showBidPurchase);
+router.get("/showBidPurchase", showBidPurchase);
 router.post("/home", authenticateUser, home);
 module.exports = router;
