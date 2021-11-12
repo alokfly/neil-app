@@ -1,7 +1,11 @@
 const { model, Schema } = require("mongoose");
-const bidPurchaseSchema = new Schema(
+const winnerSchema = new Schema(
   {
-    user_id: {
+    product_id: {
+      type: String,
+      required: true,
+    },
+    productName: {
       type: String,
       required: true,
     },
@@ -9,23 +13,15 @@ const bidPurchaseSchema = new Schema(
       type: String,
       required: true,
     },
-    image: {
-      type: Array,
-      required: true,
-    },
-    productName: {
-      type: String,
-      required: true,
-    },
-    product_id: {
-      type: String,
-      required: true,
-    },
     bid: {
       type: Number,
+      required: true,
+    },
+    image: {
+      type: Array,
       required: true,
     },
   },
   { timestamps: true }
 );
-module.exports = model("bidPurchase", bidPurchaseSchema);
+module.exports = model("winner", winnerSchema);
