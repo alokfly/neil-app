@@ -9,6 +9,7 @@ const bidPurchaseRoutes = require("./routes/bidPurchaseRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const subscriptionRoutes = require("./routes/subscriptionRoutes");
 const auctionRoutes = require("./routes/auctionRoutes");
+const couponRoutes = require("./routes/couponRoutes");
 
 require("dotenv").config();
 const app = express();
@@ -37,6 +38,7 @@ app.use("/", bidPurchaseRoutes);
 app.use("/", adminRoutes);
 app.use("/", subscriptionRoutes);
 app.use("/", auctionRoutes);
+app.use("/", couponRoutes);
 
 const PORT = process.env.PORT || 5000;
 
