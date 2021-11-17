@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
 var ObjectId = require("mongodb").ObjectID;
 const Product = require("../models/Product");
+const ShoeSize = require("../models/ShoeSize");
 
 module.exports.addProduct = async (req, res) => {
   let profile = req.files;
@@ -56,6 +57,53 @@ module.exports.deleteProduct = async (req, res) => {
       _id: ObjectId(req.params.id),
     });
     res.status(200).send({ msg: "Product deleted successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.addShoeSize = async (req, res) => {
+  try {
+    let { shoe_size } = req.body;
+    const response = await ShoeSize.create({
+      shoe_size,
+    });
+    res.status(200).send({ msg: "shoe size successfully added" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.getShoeSize = async (req, res) => {
+  try {
+    const response = await ShoeSize.find();
+    res.status(200).send({ data: response });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.updateShoeSize = async (req, res) => {
+  const { shoe_size } = req.body;
+  try {
+    const response = await ShoeSize.findByIdAndUpdate(
+      { _id: ObjectId(req.params.id) },
+      {
+        shoe_size,
+      }
+    );
+    res.status(200).send({ msg: "shoe size successfully updated" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.deleteShoeSize = async (req, res) => {
+  try {
+    const response = await ShoeSize.findByIdAndDelete({
+      _id: ObjectId(req.params.id),
+    });
+    res.status(200).send({ msg: "shoe size deleted successfully" });
   } catch (error) {
     console.log(error);
   }
