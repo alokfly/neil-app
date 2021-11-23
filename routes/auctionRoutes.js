@@ -33,7 +33,11 @@ router.post(
 );
 router.get("/deleteFreeAuction/:id", deleteFreeAuction);
 
-router.post("/addExclusiveAuction", addExclusiveAuction);
+router.post(
+  "/addExclusiveAuction",
+  upload.array("myField", 5),
+  addExclusiveAuction
+);
 router.get("/getExclusiveAuction", getExclusiveAuction);
 router.post(
   "/updateExclusiveAuction/:id",
