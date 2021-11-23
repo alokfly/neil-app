@@ -9,6 +9,30 @@ const freeAuctionSchema = new Schema(
       type: String,
       required: true,
     },
+    bidName: {
+      type: String,
+      required: true,
+    },
+    date: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: Array,
+      required: true,
+    },
+    time: {
+      type: String,
+      required: true,
+    },
+    size: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

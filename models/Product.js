@@ -17,6 +17,10 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
+    date: {
+      type: String,
+      required: true,
+    },
     image: {
       type: Array,
       required: true,

@@ -8,12 +8,13 @@ const ShoeSize = require("../models/ShoeSize");
 module.exports.addProduct = async (req, res) => {
   let profile = req.files;
   try {
-    let { productName, size, description, time } = req.body;
+    let { productName, size, description, time, date } = req.body;
     const response = await Product.create({
       productName,
       size,
       description,
       time,
+      date,
       image: profile,
     });
     res.status(200).send({ msg: "Product successfully added" });
@@ -33,7 +34,7 @@ module.exports.getProduct = async (req, res) => {
 
 module.exports.updateProduct = async (req, res) => {
   const id = req.params.id;
-  let { productName, size, description, time } = req.body;
+  let { productName, size, description, time, date } = req.body;
   try {
     const response = await Product.findByIdAndUpdate(
       { _id: ObjectId(req.params.id) },
@@ -42,6 +43,7 @@ module.exports.updateProduct = async (req, res) => {
         size,
         description,
         time,
+        date,
       }
     );
     res.status(200).send({ msg: "product successfully updated" });
