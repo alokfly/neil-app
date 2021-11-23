@@ -1,11 +1,11 @@
 const { model, Schema } = require("mongoose");
 const stateSchema = new Schema(
   {
-    code: {
+    name: {
       type: String,
       required: true,
     },
-    name: {
+    abbreviation: {
       type: String,
       required: true,
     },

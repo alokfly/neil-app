@@ -36,4 +36,4 @@ const exclusiveAuctionSchema = new Schema(
   },
   { timestamps: true }
 );
-module.exports = model("exclusive", exclusiveAuctionSchema);
+module.exports = model("exclusiveAuction", exclusiveAuctionSchema);

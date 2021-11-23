@@ -97,7 +97,7 @@ module.exports.addExclusiveAuction = async (req, res) => {
       size,
       image: profile,
     });
-    res.status(200).json({ msg: "Exclusive auction created successfully" });
+    res.status(200).json({ msg: "Exclusive Auction created successfully" });
   } catch (error) {
     res.status(500).json(error);
   }
