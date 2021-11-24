@@ -25,6 +25,12 @@ const productSchema = new Schema(
       type: Array,
       required: true,
     },
+    like: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
   },
   { timestamps: true }
 );

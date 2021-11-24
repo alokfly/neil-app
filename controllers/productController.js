@@ -4,6 +4,7 @@ const fs = require("fs");
 var ObjectId = require("mongodb").ObjectID;
 const Product = require("../models/Product");
 const ShoeSize = require("../models/ShoeSize");
+const User = require("../models/User");
 
 module.exports.addProduct = async (req, res) => {
   let profile = req.files;
@@ -106,6 +107,40 @@ module.exports.deleteShoeSize = async (req, res) => {
       _id: ObjectId(req.params.id),
     });
     res.status(200).send({ msg: "shoe size deleted successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.likeProduct = async (req, res) => {
+  const { email } = req.body;
+  const userDetail = await User.findOne({ email });
+  await Product.findByIdAndUpdate(
+    { _id: ObjectId(req.body.productId) },
+    {
+      $push: { like: userDetail._id },
+    },
+    {
+      new: true,
+    }
+  ).exec((err, result) => {
+    if (err) {
+      console;
+      return res.status(422).json(err);
+    } else {
+      res.json(result);
+    }
+  });
+};
+
+module.exports.getLikedProduct = async (req, res) => {
+  const { email } = req.body;
+  const userDetail = await User.findOne({ email });
+  try {
+    const getProduct = await Product.find({
+      like: { $in: userDetail._id },
+    });
+    return res.status(201).json(getProduct);
   } catch (error) {
     console.log(error);
   }
