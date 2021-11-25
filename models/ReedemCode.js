@@ -16,7 +16,7 @@ const reedemCodeSchema = new Schema(
         ref: "user",
       },
     ],
-    bids: {
+    offerBid: {
       type: Number,
       default: 10,
     },

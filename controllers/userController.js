@@ -15,6 +15,7 @@ const User = require("../models/User");
 const Otp = require("../models/Otp");
 const City = require("../models/City");
 const State = require("../models/State");
+const ReedemCode = require("../models/ReedemCode");
 
 const createToken = (user) => {
   return jwt.sign({ user }, process.env.SECRET, {
@@ -73,10 +74,12 @@ module.exports.register = async (req, res) => {
         gender,
         shoe_size,
         city,
+        bid,
         state,
         agree,
       });
       const token = createToken(user);
+
       return res
         .status(200)
         .json({ msg: "Your account has been created", token });
