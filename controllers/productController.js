@@ -113,10 +113,10 @@ module.exports.deleteShoeSize = async (req, res) => {
 };
 
 module.exports.likeProduct = async (req, res) => {
-  const { email } = req.body;
+  const { email, productId } = req.body;
   const userDetail = await User.findOne({ email });
   await Product.findByIdAndUpdate(
-    { _id: ObjectId(req.body.productId) },
+    { _id: ObjectId(productId) },
     {
       $push: { like: userDetail._id },
     },
