@@ -81,7 +81,12 @@ module.exports.register = async (req, res) => {
       const token = createToken(user);
       return res
         .status(200)
-        .json({ msg: "Your account has been created", token });
+        .json({
+          msg: "Your account has been created",
+          randomNumber,
+          user,
+          token,
+        });
     } catch (error) {
       return res.status(500).json({ errors: error });
     }
