@@ -1,4 +1,5 @@
 const Coupon = require("../models/Coupon");
+const User = require("../models/User");
 var ObjectId = require("mongodb").ObjectID;
 
 module.exports.addCoupon = async (req, res) => {
@@ -52,6 +53,53 @@ module.exports.deleteCoupon = async (req, res) => {
       _id: ObjectId(req.params.id),
     });
     res.status(200).send({ msg: "Coupon deleted successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.redeemCode = async (req, res) => {
+  const { code, email } = req.body;
+  try {
+    const userApplyingCode = await User.findOne({ email });
+
+    const checkCode = await User.findOne({ code });
+
+    const findUserAlreayApplyCode = await User.findOne({
+      userReedemCode: { $in: userApplyingCode._id },
+    });
+    console.log(findUserAlreayApplyCode);
+    if (findUserAlreayApplyCode == null) {
+      if (checkCode != null) {
+        const totalPointsUpdated = 10 + checkCode.points;
+        const updatePointsOwner = await User.findByIdAndUpdate(
+          {
+            _id: ObjectId(checkCode._id),
+          },
+          {
+            $push: { userReedemCode: userApplyingCode._id },
+            points: totalPointsUpdated,
+          },
+          {
+            new: true,
+          }
+        );
+        const totalPointsUpdatedUser = 10 + userApplyingCode.points;
+        const updatePointsWhoApplyCoupon = await User.findByIdAndUpdate(
+          {
+            _id: ObjectId(userApplyingCode._id),
+          },
+          {
+            points: totalPointsUpdatedUser,
+          }
+        );
+        return res.status(201).json({ msg: "Code applied successfully" });
+      } else {
+        return res.status(400).json({ msg: "Code not found" });
+      }
+    } else {
+      return res.status(404).json({ msg: "You already applied the code" });
+    }
   } catch (error) {
     console.log(error);
   }

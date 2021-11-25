@@ -64,6 +64,7 @@ module.exports.register = async (req, res) => {
     // Hash password
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
+    const randomNumber = Math.floor(Math.random() * 10000 + 1);
     try {
       const user = await User.create({
         full_name,
@@ -72,12 +73,12 @@ module.exports.register = async (req, res) => {
         password: hash,
         gender,
         shoe_size,
+        code: randomNumber,
         city,
         state,
         agree,
       });
       const token = createToken(user);
-
       return res
         .status(200)
         .json({ msg: "Your account has been created", token });
@@ -85,7 +86,6 @@ module.exports.register = async (req, res) => {
       return res.status(500).json({ errors: error });
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ errors: error });
   }
 };

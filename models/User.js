@@ -25,6 +25,20 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    code: {
+      type: String,
+      required: true,
+    },
+    userReedemCode: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
+    points: {
+      type: Number,
+      default: 0,
+    },
     city: {
       type: String,
       required: true,
