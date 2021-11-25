@@ -79,14 +79,12 @@ module.exports.register = async (req, res) => {
         agree,
       });
       const token = createToken(user);
-      return res
-        .status(200)
-        .json({
-          msg: "Your account has been created",
-          randomNumber,
-          user,
-          token,
-        });
+      return res.status(200).json({
+        msg: "Your account has been created",
+        randomNumber,
+        user,
+        token,
+      });
     } catch (error) {
       return res.status(500).json({ errors: error });
     }
@@ -109,7 +107,9 @@ module.exports.login = async (req, res) => {
     if (user) {
       const matched = await bcrypt.compare(password, user.password);
       if (matched) {
-        return res.status(200).json({ msg: "Login Successfull", data: email });
+        return res
+          .status(200)
+          .json({ msg: "Login Successfull", data: email, code: user.code });
       } else {
         return res
           .status(401)
