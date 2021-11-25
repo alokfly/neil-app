@@ -15,7 +15,6 @@ const User = require("../models/User");
 const Otp = require("../models/Otp");
 const City = require("../models/City");
 const State = require("../models/State");
-const ReedemCode = require("../models/ReedemCode");
 
 const createToken = (user) => {
   return jwt.sign({ user }, process.env.SECRET, {
@@ -74,7 +73,6 @@ module.exports.register = async (req, res) => {
         gender,
         shoe_size,
         city,
-        bid,
         state,
         agree,
       });
@@ -87,6 +85,7 @@ module.exports.register = async (req, res) => {
       return res.status(500).json({ errors: error });
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ errors: error });
   }
 };

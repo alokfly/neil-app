@@ -25,11 +25,6 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    bid: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
     city: {
       type: String,
       required: true,
