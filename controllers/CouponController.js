@@ -3,11 +3,16 @@ const User = require("../models/User");
 var ObjectId = require("mongodb").ObjectID;
 
 module.exports.addCoupon = async (req, res) => {
-  const { couponCode, bids } = req.body;
+  const { couponCode, expiryDate, points, numberOfUserReedem } = req.body;
   try {
     const checkCoupon = await Coupon.findOne({ couponCode });
     if (!checkCoupon) {
-      await Coupon.create({ couponCode, bids });
+      await Coupon.create({
+        couponCode,
+        expiryDate,
+        points,
+        numberOfUserReedem,
+      });
       res.status(200).json({ msg: "coupon created successfully" });
     } else {
       res.status(404).json({ msg: "coupon code already exist" });
@@ -27,7 +32,7 @@ module.exports.getCoupon = async (req, res) => {
 };
 
 module.exports.updateCoupon = async (req, res) => {
-  let { couponCode, bids } = req.body;
+  let { couponCode, expiryDate, points, numberOfUserReedem } = req.body;
   try {
     const checkCoupon = await Coupon.findOne({ couponCode });
     if (!checkCoupon) {
@@ -35,7 +40,9 @@ module.exports.updateCoupon = async (req, res) => {
         { _id: ObjectId(req.params.id) },
         {
           couponCode,
-          bids,
+          expiryDate,
+          points,
+          numberOfUserReedem,
         }
       );
       res.status(200).send({ msg: "coupon successfully updated" });

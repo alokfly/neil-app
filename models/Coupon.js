@@ -5,9 +5,27 @@ const couponSchema = new Schema(
       type: String,
       required: true,
     },
-    bids: {
+    expiryDate: {
       type: String,
       required: true,
+    },
+    points: {
+      type: String,
+      required: true,
+    },
+    userReedemCoupon: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
+    numberOfUserReedem: {
+      type: Number,
+      required: true,
+    },
+    status: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }
