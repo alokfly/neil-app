@@ -10,7 +10,7 @@ const couponSchema = new Schema(
       required: true,
     },
     points: {
-      type: String,
+      type: Number,
       required: true,
     },
     userReedemCoupon: [
