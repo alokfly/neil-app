@@ -107,14 +107,12 @@ module.exports.login = async (req, res) => {
     if (user) {
       const matched = await bcrypt.compare(password, user.password);
       if (matched) {
-        return res
-          .status(200)
-          .json({
-            msg: "Login Successfull",
-            data: email,
-            user,
-            code: user.code,
-          });
+        return res.status(200).json({
+          msg: "Login Successfull",
+          data: email,
+          user,
+          code: user.code,
+        });
       } else {
         return res
           .status(401)
@@ -213,6 +211,16 @@ module.exports.authenticateUser = async = (req, res, next) => {
       return res.status(403).send({ err, msg: "User not authenticated" });
     }
   });
+};
+
+module.exports.getParticularUserData = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const userDetail = await User.findOne({ email });
+    res.status(200).json(userDetail);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports.editUser = async (req, res) => {

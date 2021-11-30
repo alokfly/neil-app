@@ -13,6 +13,7 @@ const {
   getState,
   editUser,
   insertCity,
+  getParticularUserData,
 } = require("../controllers/userController");
 router.post("/register", registerValiations, register);
 router.post("/login", loginValiations, login);
@@ -24,5 +25,6 @@ router.get("/getCity", getCity);
 router.get("/getState", getState);
 router.get("/getUser", getUser);
 router.post("/insertCity", insertCity);
+router.post("/getParticularUserData", getParticularUserData);
 
 module.exports = router;
