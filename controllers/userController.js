@@ -114,12 +114,10 @@ module.exports.login = async (req, res) => {
           code: user.code,
         });
       } else {
-        return res
-          .status(401)
-          .json({ errors: [{ msg: "Password is not correct" }] });
+        return res.status(401).json({ msg: "Password is not correct" });
       }
     } else {
-      return res.status(404).json({ errors: [{ msg: "Email not found" }] });
+      return res.status(404).json({ msg: "Email not found" });
     }
   } catch (error) {
     return res.status(500).json({ errors: error });
