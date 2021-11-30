@@ -109,7 +109,12 @@ module.exports.login = async (req, res) => {
       if (matched) {
         return res
           .status(200)
-          .json({ msg: "Login Successfull", data: email, code: user.code });
+          .json({
+            msg: "Login Successfull",
+            data: email,
+            user,
+            code: user.code,
+          });
       } else {
         return res
           .status(401)
