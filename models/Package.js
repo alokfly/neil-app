@@ -9,6 +9,14 @@ const packageSchema = new Schema(
       type: Number,
       required: true,
     },
+    start_date: {
+      type: String,
+      required: true,
+    },
+    end_date: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

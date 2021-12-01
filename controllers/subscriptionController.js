@@ -53,11 +53,13 @@ module.exports.deleteSubscription = async (req, res) => {
 };
 
 module.exports.addPackage = async (req, res) => {
-  const { bidno, price } = req.body;
+  const { bidno, price, start_date, end_date } = req.body;
   try {
     const addSub = await Package.create({
       bidno,
       price,
+      start_date,
+      end_date,
     });
     return res.status(200).send({ msg: "Package added successfully" });
   } catch (error) {
@@ -75,13 +77,15 @@ module.exports.packageDetail = async (req, res) => {
 };
 
 module.exports.updatePackage = async (req, res) => {
-  let { bidno, price } = req.body;
+  let { bidno, price, start_date, end_date } = req.body;
   try {
     const response = await Package.findByIdAndUpdate(
       { _id: ObjectId(req.params.id) },
       {
         bidno,
         price,
+        start_date,
+        end_date,
       }
     );
     res.status(200).send({ msg: "Package successfully updated" });
