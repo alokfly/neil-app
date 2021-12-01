@@ -119,6 +119,7 @@ module.exports.likeProduct = async (req, res) => {
     { _id: ObjectId(productId) },
     {
       $push: { like: userDetail._id },
+      likeStatus: true,
     },
     {
       new: true,

@@ -31,6 +31,10 @@ const productSchema = new Schema(
         ref: "user",
       },
     ],
+    likeStatus: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
