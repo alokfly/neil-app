@@ -18,7 +18,7 @@ module.exports.addProduct = async (req, res) => {
       date,
       image: profile,
     });
-    res.status(200).send({ msg: "Product successfully added" });
+    res.status(200).send({ msg: "Product successfully added", response });
   } catch (error) {
     console.log(error);
   }
