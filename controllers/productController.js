@@ -137,7 +137,6 @@ module.exports.likeProduct = async (req, res) => {
 module.exports.getLikedProduct = async (req, res) => {
   const { email } = req.body;
   const userDetail = await User.findOne({ email });
-  console.log(userDetail);
   try {
     const getProduct = await Product.find({
       like: { $in: userDetail._id },

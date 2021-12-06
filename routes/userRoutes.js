@@ -21,7 +21,7 @@ router.post("/email-send", emailSend);
 router.post("/change-password", changePassword);
 router.get("/logout", logout);
 router.post("/editUser", editUser);
-router.get("/getCity", getCity);
+router.get("/getCity/:name", getCity);
 router.get("/getState", getState);
 router.get("/getUser", getUser);
 router.post("/insertCity", insertCity);

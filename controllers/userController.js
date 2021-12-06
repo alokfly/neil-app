@@ -243,7 +243,7 @@ module.exports.editUser = async (req, res) => {
 
 module.exports.getCity = async (req, res) => {
   try {
-    const getCity = await City.find();
+    const getCity = await City.find({ state: req.params.name });
     res.status(200).json(getCity);
   } catch (error) {
     console.log(error);
