@@ -73,7 +73,7 @@ module.exports.register = async (req, res) => {
         password: hash,
         gender,
         shoe_size,
-        code: randomNumber,
+        code: `${username}randomNumber`,
         city,
         state,
         agree,
