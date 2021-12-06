@@ -113,11 +113,11 @@ module.exports.redeemCode = async (req, res) => {
         const getExpiryDateofCoupon = checkCouponCode.expiryDate;
         var m = new Date();
         var todaysDate =
-          m.getUTCDate() +
-          "/" +
+          m.getUTCFullYear() +
+          "-" +
           (m.getUTCMonth() + 1) +
-          "/" +
-          m.getUTCFullYear();
+          "-" +
+          m.getUTCDate();
         if (getExpiryDateofCoupon >= todaysDate) {
           const findUserAlreayApplyCouponCode = await Coupon.findOne({
             _id: ObjectId(checkCouponCode._id),
