@@ -25,6 +25,8 @@ const {
   deleteShoeSize,
   likeProduct,
   getLikedProduct,
+  addComment,
+  viewComment,
 } = require("../controllers/productController");
 router.post("/addProduct", upload.array("myField", 5), addProduct);
 router.get("/getProduct", getProduct);
@@ -38,4 +40,7 @@ router.get("/deleteShoeSize/:id", deleteShoeSize);
 
 router.post("/likeProduct", likeProduct);
 router.post("/getLikedProduct", getLikedProduct);
+
+router.post("/addComment", addComment);
+router.post("/viewComment", viewComment);
 module.exports = router;

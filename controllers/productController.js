@@ -146,3 +146,36 @@ module.exports.getLikedProduct = async (req, res) => {
     console.log(error);
   }
 };
+
+module.exports.addComment = async (req, res) => {
+  try {
+    const getUseretail = await User.findOne({ email: req.body.email });
+    const comment = {
+      text: req.body.text,
+      postedBy: getUseretail._id,
+    };
+    const addComment = await Product.findByIdAndUpdate(
+      { _id: ObjectId(req.body.productId) },
+      {
+        $push: { comments: comment },
+      },
+      {
+        new: true,
+      }
+    );
+    return res.status(200).json({ msg: "comment added successfully" });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+};
+
+module.exports.viewComment = async (req, res) => {
+  try {
+    const comment = await Product.findOne({ _id: ObjectId(req.body.productId) })
+      .populate("comments.postedBy", "name")
+      .exec();
+    return res.status(200).json({ comment });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+};

@@ -35,6 +35,12 @@ const productSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    comments: [
+      {
+        text: String,
+        postedBy: { type: Schema.Types.ObjectId, ref: "user" },
+      },
+    ],
   },
   { timestamps: true }
 );
