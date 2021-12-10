@@ -41,6 +41,10 @@ const productSchema = new Schema(
         postedBy: { type: Schema.Types.ObjectId, ref: "user" },
       },
     ],
+    bid: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

@@ -10,45 +10,26 @@ const JWT_AUTH_TOKEN = process.env.JWT_AUTH_TOKEN;
 const JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN;
 
 module.exports.bidPurchase = async (req, res) => {
-  const { bid, productId, email } = req.body;
+  const { userBid, productId } = req.body;
   try {
-    const { _id, username } = await User.findOne({ email });
-    const productData = await Product.find({ _id: ObjectId(productId) });
-
-    const getImage = productData.forEach(async (element) => {
-      const getBid = await BidPurchase.findOne({
-        product_id: productId,
-        user_id: _id,
-      });
-      if (getBid) {
-        const placedBid = getBid.bid;
-        const data = await BidPurchase.findOneAndUpdate(
-          { product_id: productId, user_id: _id },
-          {
-            bid: placedBid + bid,
-            username,
-            productName: element.productName,
-            image: element.image,
-          },
-          { upsert: true, new: true, setDefaultsOnInsert: true }
-        );
-      } else {
-        const data = await BidPurchase.findOneAndUpdate(
-          { product_id: productId, user_id: _id },
-          {
-            bid,
-            username,
-            productName: element.productName,
-            image: element.image,
-          },
-          { upsert: true, new: true, setDefaultsOnInsert: true }
-        );
-      }
+    const getProductDetail = await Product.findOne({
+      _id: ObjectId(productId),
     });
-
-    return res.status(200).send({ msg: "bid placed successfully" });
+    const getBid = getProductDetail.bid + userBid;
+    const updateBid = await Product.findByIdAndUpdate(
+      {
+        _id: ObjectId(productId),
+      },
+      { bid: getBid }
+    );
+    const getUpdatedBid = await Product.findOne({
+      _id: ObjectId(productId),
+    });
+    return res
+      .status(200)
+      .send({ msg: "bid placed successfully", data: getUpdatedBid.bid });
   } catch (error) {
-    console.log(error);
+    return res.status(500).send({ msg: error.message });
   }
 };
 
@@ -80,7 +61,7 @@ module.exports.showWinner = async (req, res) => {
 module.exports.getWinner = async (req, res) => {
   try {
     const winner = await Winner.find().sort({ key: -1 });
-    res.status(200).json(winner)
+    res.status(200).json(winner);
   } catch (error) {
     console.log(error);
   }
