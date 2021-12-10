@@ -172,7 +172,7 @@ module.exports.addComment = async (req, res) => {
 module.exports.viewComment = async (req, res) => {
   try {
     const comment = await Product.findOne({ _id: ObjectId(req.body.productId) })
-      .populate("comments.postedBy", "name")
+      .populate("comments.postedBy", "username")
       .exec();
     return res.status(200).json({ comment });
   } catch (error) {
