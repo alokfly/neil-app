@@ -50,6 +50,7 @@ module.exports.viewBidPurchaseUser = async (req, res) => {
       .populate("bidingUser", "username")
       .exec();
     return res.status(200).send({
+      data: getUpdatedBid.bid,
       bidUsername: getUpdatedBid.bidingUser,
     });
   } catch (error) {
