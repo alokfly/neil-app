@@ -69,18 +69,21 @@ module.exports.showBidPurchase = async (req, res) => {
 
 module.exports.showWinner = async (req, res) => {
   const { productId } = req.body;
-  const auctionWinner = await BidPurchase.findOne({
-    product_id: productId,
-  }).sort("-bid");
-  const { productName, username, bid, image } = auctionWinner;
-  await Winner.create({
-    product_id: productId,
-    productName,
-    username,
-    bid,
-    image,
-  });
-  res.status(200).json({ auctionWinner });
+  try {
+    const auctionWinner = await Product.findOne({
+      _id: ObjectId(productId),
+    })
+      .populate("bidingUser", "username")
+      .exec();
+    const user = auctionWinner.bidingUser;
+    const getWinner = user[user.length - 1];
+    return res.status(200).send({
+      bidUsername: getWinner,
+      data: auctionWinner.bid,
+    });
+  } catch (error) {
+    return res.status(500).send({ msg: error.message });
+  }
 };
 
 module.exports.getWinner = async (req, res) => {
