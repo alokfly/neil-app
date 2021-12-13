@@ -41,6 +41,22 @@ module.exports.bidPurchase = async (req, res) => {
   }
 };
 
+module.exports.viewBidPurchaseUser = async (req, res) => {
+  const { productId } = req.body;
+  try {
+    const getUpdatedBid = await Product.findOne({
+      _id: ObjectId(productId),
+    })
+      .populate("bidingUser", "username")
+      .exec();
+    return res.status(200).send({
+      bidUsername: getUpdatedBid.bidingUser,
+    });
+  } catch (error) {
+    return res.status(500).send({ msg: error.message });
+  }
+};
+
 module.exports.showBidPurchase = async (req, res) => {
   try {
     const response = await BidPurchase.find();
