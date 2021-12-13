@@ -10,8 +10,9 @@ const JWT_AUTH_TOKEN = process.env.JWT_AUTH_TOKEN;
 const JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN;
 
 module.exports.bidPurchase = async (req, res) => {
-  const { userBid, productId } = req.body;
+  const { userBid, productId, email } = req.body;
   try {
+    const userDetail = await User.findOne({ email });
     const getProductDetail = await Product.findOne({
       _id: ObjectId(productId),
     });
@@ -20,14 +21,21 @@ module.exports.bidPurchase = async (req, res) => {
       {
         _id: ObjectId(productId),
       },
-      { bid: getBid }
+      {
+        $push: { bidingUser: userDetail._id },
+        bid: getBid,
+      }
     );
     const getUpdatedBid = await Product.findOne({
       _id: ObjectId(productId),
+    })
+      .populate("bidingUser", "username")
+      .exec();
+    return res.status(200).send({
+      msg: "bid placed successfully",
+      data: getUpdatedBid.bid,
+      bidUsername: getUpdatedBid.bidingUser,
     });
-    return res
-      .status(200)
-      .send({ msg: "bid placed successfully", data: getUpdatedBid.bid });
   } catch (error) {
     return res.status(500).send({ msg: error.message });
   }
