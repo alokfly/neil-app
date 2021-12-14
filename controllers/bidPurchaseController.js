@@ -79,6 +79,7 @@ module.exports.showWinner = async (req, res) => {
     const getWinner = user[user.length - 1];
     return res.status(200).send({
       bidUsername: auctionWinner,
+      getWinner,
     });
   } catch (error) {
     return res.status(500).send({ msg: error.message });
