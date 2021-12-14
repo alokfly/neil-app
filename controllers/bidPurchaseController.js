@@ -80,6 +80,7 @@ module.exports.showWinner = async (req, res) => {
     return res.status(200).send({
       bidUsername: getWinner,
       data: auctionWinner.bid,
+      productDetail: auctionWinner,
     });
   } catch (error) {
     return res.status(500).send({ msg: error.message });
