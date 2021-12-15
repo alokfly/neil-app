@@ -150,9 +150,13 @@ module.exports.getLikedProduct = async (req, res) => {
 module.exports.addComment = async (req, res) => {
   try {
     const getUseretail = await User.findOne({ email: req.body.email });
+    const currentDate = new Date();
+    const currentTime = currentDate.getHours() + ":" + currentDate.getMinutes();
     const comment = {
       text: req.body.text,
       postedBy: getUseretail._id,
+      date: new Date().toLocaleDateString(),
+      time: currentTime,
     };
     const addComment = await Product.findByIdAndUpdate(
       { _id: ObjectId(req.body.productId) },

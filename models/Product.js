@@ -38,6 +38,8 @@ const productSchema = new Schema(
     comments: [
       {
         text: String,
+        date: String,
+        time: String,
         postedBy: { type: Schema.Types.ObjectId, ref: "user" },
       },
     ],
