@@ -2,13 +2,15 @@ const app = require("express");
 const auth = require("../utils/auth");
 const router = app.Router();
 
+const path = require("path");
+
 var multer = require("multer");
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/images");
   },
   filename: function (req, file, cb) {
-    cb(null, "product" + Date.now() + "_" + file.originalname);
+    cb(null, "product_" + Date.now() + path.extname(file.originalname));
   },
 });
 
