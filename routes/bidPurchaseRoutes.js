@@ -7,13 +7,13 @@ const {
   viewBidPurchaseUser,
   home,
   showBidPurchase,
-  showWinner,
+  addWinner,
   getWinner,
 } = require("../controllers/bidPurchaseController");
 router.post("/bidPurchase", bidPurchase);
 router.post("/viewBidPurchaseUser", viewBidPurchaseUser);
 router.get("/showBidPurchase", showBidPurchase);
-router.post("/showWinner", showWinner);
+router.post("/addWinner", addWinner);
 router.get("/getWinner", getWinner);
 router.post("/home", authenticateUser, home);
 module.exports = router;

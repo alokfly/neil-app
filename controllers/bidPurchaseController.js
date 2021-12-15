@@ -67,7 +67,7 @@ module.exports.showBidPurchase = async (req, res) => {
   }
 };
 
-module.exports.showWinner = async (req, res) => {
+module.exports.addWinner = async (req, res) => {
   const { productId } = req.body;
   try {
     const auctionWinner = await Product.findOne({
@@ -77,10 +77,16 @@ module.exports.showWinner = async (req, res) => {
       .exec();
     const user = auctionWinner.bidingUser;
     const getWinner = user[user.length - 1];
-    return res.status(200).send({
-      bidUsername: auctionWinner,
-      getWinner,
+    auctionWinner.image.forEach(async (item) => {
+      const addWinner = await Winner.create({
+        username: getWinner.username,
+        productName: auctionWinner.productName,
+        size: auctionWinner.size,
+        bid: auctionWinner.bid,
+        image: item,
+      });
     });
+    return res.status(201).send({ msg: "Winner added" });
   } catch (error) {
     return res.status(500).send({ msg: error.message });
   }
@@ -88,10 +94,13 @@ module.exports.showWinner = async (req, res) => {
 
 module.exports.getWinner = async (req, res) => {
   try {
-    const winner = await Winner.find().sort({ key: -1 });
-    res.status(200).json(winner);
+    const winner = await Winner.find({})
+      .sort({ created_at: -1 })
+      .exec(function (err, response) {
+        return res.status(200).json(response);
+      });
   } catch (error) {
-    console.log(error);
+    return res.status(500).send({ msg: error.message });
   }
 };
 

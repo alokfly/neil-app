@@ -1,7 +1,7 @@
 const { model, Schema } = require("mongoose");
 const winnerSchema = new Schema(
   {
-    product_id: {
+    username: {
       type: String,
       required: true,
     },
@@ -9,7 +9,7 @@ const winnerSchema = new Schema(
       type: String,
       required: true,
     },
-    username: {
+    size: {
       type: String,
       required: true,
     },
