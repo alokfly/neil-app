@@ -154,6 +154,33 @@ module.exports.deleteRewardPoints = async (req, res) => {
   }
 };
 
+module.exports.claimRewardPoints = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const getUserDetail = await User.findOne({ email });
+    const getRewardPoints = await RewardPoint.findOne({});
+    if (getUserDetail.points >= getRewardPoints.points) {
+      const totalBids = getUserDetail.bids + getRewardPoints.bid;
+      const upadatePoints = getUserDetail.points - getRewardPoints.points;
+      const updateBid = await User.findOneAndUpdate(
+        { email },
+        {
+          bids: totalBids,
+          points: upadatePoints,
+        }
+      );
+      const updatedUserDetail = await User.findOne({ email });
+      return res
+        .status(200)
+        .json({ msg: "Reward points successfully claimed", updatedUserDetail });
+    } else {
+      return res.status(400).json({ msg: "You don't have enough points" });
+    }
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+};
+
 module.exports.home = async (req, res) => {
   return res.status(200).send("home");
 };

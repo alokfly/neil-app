@@ -39,6 +39,10 @@ const userSchema = new Schema(
       type: Number,
       default: 0,
     },
+    bids: {
+      type: Number,
+      default: 0,
+    },
     city: {
       type: String,
     },
