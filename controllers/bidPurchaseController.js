@@ -120,7 +120,7 @@ module.exports.addRewardPoints = async (req, res) => {
 
 module.exports.getRewardPoints = async (req, res) => {
   try {
-    const addRewardPoints = await RewardPoint.find();
+    const addRewardPoints = await RewardPoint.findOne({});
     return res.status(200).json(addRewardPoints);
   } catch (error) {
     return res.status(500).json({ msg: errror.message });
