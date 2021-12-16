@@ -9,11 +9,21 @@ const {
   showBidPurchase,
   addWinner,
   getWinner,
+  addRewardPoints,
+  getRewardPoints,
+  editRewardPoints,
+  deleteRewardPoints,
 } = require("../controllers/bidPurchaseController");
 router.post("/bidPurchase", bidPurchase);
 router.post("/viewBidPurchaseUser", viewBidPurchaseUser);
 router.get("/showBidPurchase", showBidPurchase);
 router.post("/addWinner", addWinner);
 router.get("/getWinner", getWinner);
+
+router.post("/addRewardPoints", addRewardPoints);
+router.get("/getRewardPoints", getRewardPoints);
+router.patch("/editRewardPoints/:id", editRewardPoints);
+router.get("/deleteRewardPoints/:id", deleteRewardPoints);
+
 router.post("/home", authenticateUser, home);
 module.exports = router;

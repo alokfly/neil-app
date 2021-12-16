@@ -2,6 +2,7 @@ const BidPurchase = require("../models/BidPurchase");
 const User = require("../models/User");
 const Product = require("../models/Product");
 const Winner = require("../models/Winner");
+const RewardPoint = require("../models/RewardPoint");
 const jwt = require("jsonwebtoken");
 var ObjectId = require("mongodb").ObjectID;
 require("dotenv").config();
@@ -101,6 +102,55 @@ module.exports.getWinner = async (req, res) => {
       });
   } catch (error) {
     return res.status(500).send({ msg: error.message });
+  }
+};
+
+module.exports.addRewardPoints = async (req, res) => {
+  const { bid, points } = req.body;
+  try {
+    const addRewardPoints = await RewardPoint.create({
+      bid,
+      points,
+    });
+    return res.status(201).json({ msg: "reward points successfully created" });
+  } catch (error) {
+    return res.status(500).json({ msg: errror.message });
+  }
+};
+
+module.exports.getRewardPoints = async (req, res) => {
+  try {
+    const addRewardPoints = await RewardPoint.find();
+    return res.status(200).json(addRewardPoints);
+  } catch (error) {
+    return res.status(500).json({ msg: errror.message });
+  }
+};
+
+module.exports.editRewardPoints = async (req, res) => {
+  const { bid, points } = req.body;
+  try {
+    const editRewardPoints = await RewardPoint.findByIdAndUpdate(
+      { _id: ObjectId(req.params.id) },
+      {
+        bid,
+        points,
+      }
+    );
+    return res.status(201).json({ msg: "reward points successfully edited" });
+  } catch (error) {
+    return res.status(500).json({ msg: errror.message });
+  }
+};
+
+module.exports.deleteRewardPoints = async (req, res) => {
+  try {
+    const editRewardPoints = await RewardPoint.findByIdAndRemove({
+      _id: ObjectId(req.params.id),
+    });
+    return res.status(200).json({ msg: "reward points successfully deleted" });
+  } catch (error) {
+    return res.status(500).json({ msg: errror.message });
   }
 };
 
