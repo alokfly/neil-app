@@ -33,6 +33,10 @@ const freeAuctionSchema = new Schema(
       type: String,
       required: true,
     },
+    numerofUserCanRedeem: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

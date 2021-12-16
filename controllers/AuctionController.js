@@ -4,7 +4,16 @@ var ObjectId = require("mongodb").ObjectID;
 
 module.exports.addFreeAuction = async (req, res) => {
   const profile = req.files;
-  const { points, day, bidName, date, description, time, size } = req.body;
+  const {
+    points,
+    day,
+    bidName,
+    date,
+    description,
+    time,
+    size,
+    numerofUserCanRedeem,
+  } = req.body;
   try {
     await FreeAuction.create({
       points,
@@ -14,6 +23,7 @@ module.exports.addFreeAuction = async (req, res) => {
       description,
       time,
       size,
+      numerofUserCanRedeem,
       image: profile,
     });
     res.status(200).json({ msg: "Free auction created successfully" });
@@ -33,8 +43,17 @@ module.exports.getFreeAuction = async (req, res) => {
 
 module.exports.updateFreeAuction = async (req, res) => {
   const profile = req.files;
-  let { points, day, bidName, date, description, time, size, currentImage } =
-    req.body;
+  let {
+    points,
+    day,
+    bidName,
+    date,
+    description,
+    time,
+    size,
+    currentImage,
+    numerofUserCanRedeem,
+  } = req.body;
   try {
     if (profile) {
       const response = await FreeAuction.findByIdAndUpdate(
@@ -47,6 +66,7 @@ module.exports.updateFreeAuction = async (req, res) => {
           description,
           time,
           size,
+          numerofUserCanRedeem,
           image: profile,
         }
       );
@@ -61,6 +81,7 @@ module.exports.updateFreeAuction = async (req, res) => {
           description,
           time,
           size,
+          numerofUserCanRedeem,
           image: currentImage,
         }
       );
@@ -85,7 +106,16 @@ module.exports.deleteFreeAuction = async (req, res) => {
 
 module.exports.addExclusiveAuction = async (req, res) => {
   const profile = req.files;
-  const { points, day, bidName, date, description, time, size } = req.body;
+  const {
+    points,
+    day,
+    bidName,
+    date,
+    description,
+    time,
+    size,
+    numerofUserCanRedeem,
+  } = req.body;
   try {
     await ExclusiveAuction.create({
       points,
@@ -95,6 +125,7 @@ module.exports.addExclusiveAuction = async (req, res) => {
       description,
       time,
       size,
+      numerofUserCanRedeem,
       image: profile,
     });
     res.status(200).json({ msg: "Exclusive Auction created successfully" });
@@ -114,8 +145,17 @@ module.exports.getExclusiveAuction = async (req, res) => {
 
 module.exports.updateExclusiveAuction = async (req, res) => {
   const profile = req.files;
-  const { points, day, bidName, date, description, time, size, currentImage } =
-    req.body;
+  const {
+    points,
+    day,
+    bidName,
+    date,
+    description,
+    time,
+    size,
+    currentImage,
+    numerofUserCanRedeem,
+  } = req.body;
   try {
     if (profile) {
       const response = await ExclusiveAuction.findByIdAndUpdate(
@@ -128,6 +168,7 @@ module.exports.updateExclusiveAuction = async (req, res) => {
           description,
           time,
           size,
+          numerofUserCanRedeem,
           image: profile,
         }
       );
@@ -142,6 +183,7 @@ module.exports.updateExclusiveAuction = async (req, res) => {
           description,
           time,
           size,
+          numerofUserCanRedeem,
           image: currentImage,
         }
       );
