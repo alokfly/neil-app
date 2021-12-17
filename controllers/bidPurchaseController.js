@@ -1,6 +1,8 @@
 const BidPurchase = require("../models/BidPurchase");
 const User = require("../models/User");
 const Product = require("../models/Product");
+const FreeAuction = require("../models/FreeAuction");
+const ExclusiveAuction = require("../models/ExclusiveAuction");
 const Winner = require("../models/Winner");
 const RewardPoint = require("../models/RewardPoint");
 const jwt = require("jsonwebtoken");
@@ -11,32 +13,82 @@ const JWT_AUTH_TOKEN = process.env.JWT_AUTH_TOKEN;
 const JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN;
 
 module.exports.bidPurchase = async (req, res) => {
-  const { userBid, productId, email } = req.body;
+  const { userBid, productId, email, status } = req.body;
   try {
     const userDetail = await User.findOne({ email });
-    const getProductDetail = await Product.findOne({
-      _id: ObjectId(productId),
-    });
-    const getBid = getProductDetail.bid + userBid;
-    const updateBid = await Product.findByIdAndUpdate(
-      {
+    if (status === 1) {
+      const getProductDetail = await Product.findOne({
         _id: ObjectId(productId),
-      },
-      {
-        $push: { bidingUser: userDetail._id },
-        bid: getBid,
-      }
-    );
-    const getUpdatedBid = await Product.findOne({
-      _id: ObjectId(productId),
-    })
-      .populate("bidingUser", "username")
-      .exec();
-    return res.status(200).send({
-      msg: "bid placed successfully",
-      data: getUpdatedBid.bid,
-      bidUsername: getUpdatedBid.bidingUser,
-    });
+      });
+      const getBid = getProductDetail.bid + userBid;
+      const updateBid = await Product.findByIdAndUpdate(
+        {
+          _id: ObjectId(productId),
+        },
+        {
+          $push: { bidingUser: userDetail._id },
+          bid: getBid,
+        }
+      );
+      const getUpdatedBid = await Product.findOne({
+        _id: ObjectId(productId),
+      })
+        .populate("bidingUser", "username")
+        .exec();
+      return res.status(200).send({
+        msg: "bid placed successfully",
+        data: getUpdatedBid.bid,
+        bidUsername: getUpdatedBid.bidingUser,
+      });
+    } else if (status === 2) {
+      const getProductDetail = await FreeAuction.findOne({
+        _id: ObjectId(productId),
+      });
+      const getBid = getProductDetail.bid + userBid;
+      const updateBid = await FreeAuction.findByIdAndUpdate(
+        {
+          _id: ObjectId(productId),
+        },
+        {
+          $push: { bidingUser: userDetail._id },
+          bid: getBid,
+        }
+      );
+      const getUpdatedBid = await FreeAuction.findOne({
+        _id: ObjectId(productId),
+      })
+        .populate("bidingUser", "username")
+        .exec();
+      return res.status(200).send({
+        msg: "bid placed successfully",
+        data: getUpdatedBid.bid,
+        bidUsername: getUpdatedBid.bidingUser,
+      });
+    } else {
+      const getProductDetail = await ExclusiveAuction.findOne({
+        _id: ObjectId(productId),
+      });
+      const getBid = getProductDetail.bid + userBid;
+      const updateBid = await ExclusiveAuction.findByIdAndUpdate(
+        {
+          _id: ObjectId(productId),
+        },
+        {
+          $push: { bidingUser: userDetail._id },
+          bid: getBid,
+        }
+      );
+      const getUpdatedBid = await ExclusiveAuction.findOne({
+        _id: ObjectId(productId),
+      })
+        .populate("bidingUser", "username")
+        .exec();
+      return res.status(200).send({
+        msg: "bid placed successfully",
+        data: getUpdatedBid.bid,
+        bidUsername: getUpdatedBid.bidingUser,
+      });
+    }
   } catch (error) {
     return res.status(500).send({ msg: error.message });
   }

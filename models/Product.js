@@ -47,6 +47,10 @@ const productSchema = new Schema(
       type: Number,
       default: 0,
     },
+    status: {
+      type: Number,
+      default: 1,
+    },
     bidingUser: [
       {
         type: Schema.Types.ObjectId,

@@ -37,6 +37,20 @@ const exclusiveAuctionSchema = new Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: Number,
+      default: 3,
+    },
+    bid: {
+      type: Number,
+      default: 0,
+    },
+    bidingUser: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
   },
   { timestamps: true }
 );
