@@ -62,7 +62,8 @@ module.exports.bidPurchase = async (req, res) => {
         },
       ]);
       repeatData.forEach(async (item) => {
-        if (getProductDetail.numerofUserCanRedeem >= item.userId) {
+        const userCanBid = item.userId - 1;
+        if (getProductDetail.numerofUserCanRedeem >= userCanBid) {
           const getBid = getProductDetail.bid + userBid;
           const updateBid = await FreeAuction.findByIdAndUpdate(
             {
@@ -111,7 +112,8 @@ module.exports.bidPurchase = async (req, res) => {
         },
       ]);
       repeatData.forEach(async (item) => {
-        if (getProductDetail.numerofUserCanRedeem >= item.userId) {
+        const userCanBid = item.userId - 1;
+        if (getProductDetail.numerofUserCanRedeem >= userCanBid) {
           const getBid = getProductDetail.bid + userBid;
           const updateBid = await ExclusiveAuction.findByIdAndUpdate(
             {
