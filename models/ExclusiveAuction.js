@@ -34,7 +34,7 @@ const exclusiveAuctionSchema = new Schema(
       required: true,
     },
     numerofUserCanRedeem: {
-      type: String,
+      type: Number,
       required: true,
     },
     status: {
