@@ -62,8 +62,8 @@ module.exports.bidPurchase = async (req, res) => {
         },
       ]);
       repeatData.forEach(async (item) => {
-        const userCanBid = item.userId - 1;
-        if (getProductDetail.numerofUserCanRedeem >= userCanBid) {
+        const userCanBid = item.userId.length - 1;
+        if (getProductDetail.numerofUserCanRedeem > userCanBid) {
           const getBid = getProductDetail.bid + userBid;
           const updateBid = await FreeAuction.findByIdAndUpdate(
             {
@@ -91,10 +91,10 @@ module.exports.bidPurchase = async (req, res) => {
         }
       });
     } else {
-      const getProductDetail = await FreeAuction.findOne({
+      const getProductDetail = await ExclusiveAuction.findOne({
         _id: ObjectId(productId),
       });
-      const repeatData = await FreeAuction.aggregate([
+      const repeatData = await ExclusiveAuction.aggregate([
         {
           $project: {
             userId: {
@@ -112,8 +112,8 @@ module.exports.bidPurchase = async (req, res) => {
         },
       ]);
       repeatData.forEach(async (item) => {
-        const userCanBid = item.userId - 1;
-        if (getProductDetail.numerofUserCanRedeem >= userCanBid) {
+        const userCanBid = item.userId.length - 1;
+        if (getProductDetail.numerofUserCanRedeem > userCanBid) {
           const getBid = getProductDetail.bid + userBid;
           const updateBid = await ExclusiveAuction.findByIdAndUpdate(
             {
@@ -301,6 +301,64 @@ module.exports.claimRewardPoints = async (req, res) => {
         .json({ msg: "Reward points successfully claimed", updatedUserDetail });
     } else {
       return res.status(400).json({ msg: "You don't have enough points" });
+    }
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+};
+
+module.exports.totalUserBidingFreeAuction = async (req, res) => {
+  const { productId, email } = req.body;
+  try {
+    const userDetail = await User.findOne({ email });
+    const getProduct = await FreeAuction.findOne({ _id: ObjectId(productId) });
+    const numberofUser = getProduct.totalUserBiding.length;
+    if (getProduct.numerofUserCanRedeem > numberofUser) {
+      const addUserBid = await FreeAuction.findByIdAndUpdate(
+        {
+          _id: ObjectId(productId),
+        },
+        {
+          $push: { totalUserBiding: userDetail._id },
+        }
+      );
+      const updatedPoduct = await FreeAuction.findOne({
+        _id: ObjectId(productId),
+      });
+      const updatedOfUser = updatedPoduct.totalUserBiding.length;
+      return res.status(200).json(updatedOfUser);
+    } else {
+      return res.status(400).json({ msg: "You can not claim now" });
+    }
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+};
+
+module.exports.totalUserBidingExclusiveAuction = async (req, res) => {
+  const { productId, email } = req.body;
+  try {
+    const userDetail = await User.findOne({ email });
+    const getProduct = await ExclusiveAuction.findOne({
+      _id: ObjectId(productId),
+    });
+    const numberofUser = getProduct.totalUserBiding.length;
+    if (getProduct.numerofUserCanRedeem > numberofUser) {
+      const addUserBid = await ExclusiveAuction.findByIdAndUpdate(
+        {
+          _id: ObjectId(productId),
+        },
+        {
+          $push: { totalUserBiding: userDetail._id },
+        }
+      );
+      const updatedPoduct = await ExclusiveAuction.findOne({
+        _id: ObjectId(productId),
+      });
+      const updatedOfUser = updatedPoduct.totalUserBiding.length;
+      return res.status(200).json(updatedOfUser);
+    } else {
+      return res.status(400).json({ msg: "You can not claim now" });
     }
   } catch (error) {
     return res.status(500).json({ msg: error.message });

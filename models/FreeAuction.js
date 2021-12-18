@@ -45,6 +45,12 @@ const freeAuctionSchema = new Schema(
       type: Number,
       default: 0,
     },
+    totalUserBiding: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
     bidingUser: [
       {
         type: Schema.Types.ObjectId,

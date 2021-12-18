@@ -14,6 +14,9 @@ const {
   editRewardPoints,
   deleteRewardPoints,
   claimRewardPoints,
+  totalUserBiding,
+  totalUserBidingFreeAuction,
+  totalUserBidingExclusiveAuction,
 } = require("../controllers/bidPurchaseController");
 router.post("/bidPurchase", bidPurchase);
 router.post("/viewBidPurchaseUser", viewBidPurchaseUser);
@@ -29,4 +32,10 @@ router.get("/deleteRewardPoints/:id", deleteRewardPoints);
 router.post("/claimRewardPoints", claimRewardPoints);
 
 router.post("/home", authenticateUser, home);
+
+router.post("/totalUserBidingFreeAuction", totalUserBidingFreeAuction);
+router.post(
+  "/totalUserBidingExclusiveAuction",
+  totalUserBidingExclusiveAuction
+);
 module.exports = router;
