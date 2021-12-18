@@ -147,17 +147,39 @@ module.exports.bidPurchase = async (req, res) => {
 };
 
 module.exports.viewBidPurchaseUser = async (req, res) => {
-  const { productId } = req.body;
+  const { productId, status } = req.body;
   try {
-    const getUpdatedBid = await Product.findOne({
-      _id: ObjectId(productId),
-    })
-      .populate("bidingUser", "username")
-      .exec();
-    return res.status(200).send({
-      data: getUpdatedBid.bid,
-      bidUsername: getUpdatedBid.bidingUser,
-    });
+    if (status === 1) {
+      const getUpdatedBid = await Product.findOne({
+        _id: ObjectId(productId),
+      })
+        .populate("bidingUser", "username")
+        .exec();
+      return res.status(200).send({
+        data: getUpdatedBid.bid,
+        bidUsername: getUpdatedBid.bidingUser,
+      });
+    } else if (status === 2) {
+      const getUpdatedBid = await FreeAuction.findOne({
+        _id: ObjectId(productId),
+      })
+        .populate("bidingUser", "username")
+        .exec();
+      return res.status(200).send({
+        data: getUpdatedBid.bid,
+        bidUsername: getUpdatedBid.bidingUser,
+      });
+    } else {
+      const getUpdatedBid = await ExclusiveAuction.findOne({
+        _id: ObjectId(productId),
+      })
+        .populate("bidingUser", "username")
+        .exec();
+      return res.status(200).send({
+        data: getUpdatedBid.bid,
+        bidUsername: getUpdatedBid.bidingUser,
+      });
+    }
   } catch (error) {
     return res.status(500).send({ msg: error.message });
   }
