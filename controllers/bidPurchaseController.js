@@ -44,49 +44,99 @@ module.exports.bidPurchase = async (req, res) => {
       const getProductDetail = await FreeAuction.findOne({
         _id: ObjectId(productId),
       });
-      const getBid = getProductDetail.bid + userBid;
-      const updateBid = await FreeAuction.findByIdAndUpdate(
+      const repeatData = await FreeAuction.aggregate([
         {
-          _id: ObjectId(productId),
+          $project: {
+            userId: {
+              $size: {
+                $filter: {
+                  input: "$bidingUser",
+                  as: "item",
+                  cond: {
+                    $eq: ["$$item", userDetail._id],
+                  },
+                },
+              },
+            },
+          },
         },
-        {
-          $push: { bidingUser: userDetail._id },
-          bid: getBid,
+      ]);
+      repeatData.forEach(async (item) => {
+        if (getProductDetail.numerofUserCanRedeem >= item.userId) {
+          const getBid = getProductDetail.bid + userBid;
+          const updateBid = await FreeAuction.findByIdAndUpdate(
+            {
+              _id: ObjectId(productId),
+            },
+            {
+              $push: { bidingUser: userDetail._id },
+              bid: getBid,
+            }
+          );
+          const getUpdatedBid = await FreeAuction.findOne({
+            _id: ObjectId(productId),
+          })
+            .populate("bidingUser", "username")
+            .exec();
+          return res.status(200).send({
+            msg: "bid placed successfully",
+            data: getUpdatedBid.bid,
+            bidUsername: getUpdatedBid.bidingUser,
+          });
+        } else {
+          return res.status(400).send({
+            msg: "Your bid limit is exceded",
+          });
         }
-      );
-      const getUpdatedBid = await FreeAuction.findOne({
-        _id: ObjectId(productId),
-      })
-        .populate("bidingUser", "username")
-        .exec();
-      return res.status(200).send({
-        msg: "bid placed successfully",
-        data: getUpdatedBid.bid,
-        bidUsername: getUpdatedBid.bidingUser,
       });
     } else {
-      const getProductDetail = await ExclusiveAuction.findOne({
+      const getProductDetail = await FreeAuction.findOne({
         _id: ObjectId(productId),
       });
-      const getBid = getProductDetail.bid + userBid;
-      const updateBid = await ExclusiveAuction.findByIdAndUpdate(
+      const repeatData = await FreeAuction.aggregate([
         {
-          _id: ObjectId(productId),
+          $project: {
+            userId: {
+              $size: {
+                $filter: {
+                  input: "$bidingUser",
+                  as: "item",
+                  cond: {
+                    $eq: ["$$item", userDetail._id],
+                  },
+                },
+              },
+            },
+          },
         },
-        {
-          $push: { bidingUser: userDetail._id },
-          bid: getBid,
+      ]);
+      repeatData.forEach(async (item) => {
+        if (getProductDetail.numerofUserCanRedeem >= item.userId) {
+          const getBid = getProductDetail.bid + userBid;
+          const updateBid = await ExclusiveAuction.findByIdAndUpdate(
+            {
+              _id: ObjectId(productId),
+            },
+            {
+              $push: { bidingUser: userDetail._id },
+              bid: getBid,
+            }
+          );
+          const getUpdatedBid = await ExclusiveAuction.findOne({
+            _id: ObjectId(productId),
+          })
+            .populate("bidingUser", "username")
+            .exec();
+          return res.status(200).send({
+            msg: "bid placed successfully",
+            data: getUpdatedBid.bid,
+            bidUsername: getUpdatedBid.bidingUser,
+          });
+        } else {
+          return res.status(400).send({
+            msg: "Your bid limit is exceded",
+          });
         }
-      );
-      const getUpdatedBid = await ExclusiveAuction.findOne({
-        _id: ObjectId(productId),
-      })
-        .populate("bidingUser", "username")
-        .exec();
-      return res.status(200).send({
-        msg: "bid placed successfully",
-        data: getUpdatedBid.bid,
-        bidUsername: getUpdatedBid.bidingUser,
       });
     }
   } catch (error) {
