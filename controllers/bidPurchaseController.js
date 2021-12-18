@@ -391,7 +391,7 @@ module.exports.totalUserBidingExclusiveAuction = async (req, res) => {
 
 module.exports.getFreeAuctionProgress = async (req, res) => {
   try {
-    const getFreeAuctionProgress = FreeAuctionProgress.findOne({
+    const getFreeAuctionProgress = await FreeAuctionProgress.findOne({
       _id: ObjectId(req.body.productId),
     });
     return res.status(200).json(getFreeAuctionProgress);
@@ -402,7 +402,7 @@ module.exports.getFreeAuctionProgress = async (req, res) => {
 
 module.exports.getExclusiveAuctionProgress = async (req, res) => {
   try {
-    const getExclusiveAuctionProgress = ExclusiveAuctionProgress.findOne({
+    const getExclusiveAuctionProgress = await ExclusiveAuctionProgress.findOne({
       _id: ObjectId(req.body.productId),
     });
     return res.status(200).json(getExclusiveAuctionProgress);
