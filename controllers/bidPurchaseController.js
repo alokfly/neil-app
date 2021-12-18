@@ -326,7 +326,9 @@ module.exports.totalUserBidingFreeAuction = async (req, res) => {
         _id: ObjectId(productId),
       });
       const updatedOfUser = updatedPoduct.totalUserBiding.length;
-      return res.status(200).json(updatedOfUser);
+      return res
+        .status(200)
+        .json({ updatedOfUser, user: getProduct.numerofUserCanRedeem });
     } else {
       return res.status(400).json({ msg: "You can not claim now" });
     }
@@ -356,7 +358,9 @@ module.exports.totalUserBidingExclusiveAuction = async (req, res) => {
         _id: ObjectId(productId),
       });
       const updatedOfUser = updatedPoduct.totalUserBiding.length;
-      return res.status(200).json(updatedOfUser);
+      return res
+        .status(200)
+        .json({ updatedOfUser, user: getProduct.numerofUserCanRedeem });
     } else {
       return res.status(400).json({ msg: "You can not claim now" });
     }
