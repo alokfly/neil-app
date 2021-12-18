@@ -17,6 +17,8 @@ const {
   totalUserBiding,
   totalUserBidingFreeAuction,
   totalUserBidingExclusiveAuction,
+  getFreeAuctionProgress,
+  getExclusiveAuctionProgress,
 } = require("../controllers/bidPurchaseController");
 router.post("/bidPurchase", bidPurchase);
 router.post("/viewBidPurchaseUser", viewBidPurchaseUser);
@@ -38,4 +40,8 @@ router.post(
   "/totalUserBidingExclusiveAuction",
   totalUserBidingExclusiveAuction
 );
+
+router.post("/getFreeAuctionProgress", getFreeAuctionProgress);
+router.post("/getExclusiveAuctionProgress", getExclusiveAuctionProgress);
+
 module.exports = router;

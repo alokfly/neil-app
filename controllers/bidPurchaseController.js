@@ -7,6 +7,8 @@ const Winner = require("../models/Winner");
 const RewardPoint = require("../models/RewardPoint");
 const jwt = require("jsonwebtoken");
 var ObjectId = require("mongodb").ObjectID;
+const FreeAuctionProgress = require("../models/FreeAuctionProgress");
+const ExclusiveAuctionProgress = require("../models/ExclusiveAuctionProgress");
 require("dotenv").config();
 
 const JWT_AUTH_TOKEN = process.env.JWT_AUTH_TOKEN;
@@ -326,6 +328,15 @@ module.exports.totalUserBidingFreeAuction = async (req, res) => {
         _id: ObjectId(productId),
       });
       const updatedOfUser = updatedPoduct.totalUserBiding.length;
+      const addProgress = await FreeAuctionProgress.findByIdAndUpdate(
+        { _id: ObjectId(productId) },
+        {
+          productId,
+          totoalUserBid: updatedOfUser,
+          totalAdminBid: getProduct.numerofUserCanRedeem,
+        },
+        { upsert: true }
+      );
       return res
         .status(200)
         .json({ updatedOfUser, user: getProduct.numerofUserCanRedeem });
@@ -358,12 +369,43 @@ module.exports.totalUserBidingExclusiveAuction = async (req, res) => {
         _id: ObjectId(productId),
       });
       const updatedOfUser = updatedPoduct.totalUserBiding.length;
+      const addProgress = await ExclusiveAuctionProgress.findByIdAndUpdate(
+        { _id: ObjectId(productId) },
+        {
+          productId,
+          totoalUserBid: updatedOfUser,
+          totalAdminBid: getProduct.numerofUserCanRedeem,
+        },
+        { upsert: true }
+      );
       return res
         .status(200)
         .json({ updatedOfUser, user: getProduct.numerofUserCanRedeem });
     } else {
       return res.status(400).json({ msg: "You can not claim now" });
     }
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+};
+
+module.exports.getFreeAuctionProgress = async (req, res) => {
+  try {
+    const getFreeAuctionProgress = FreeAuctionProgress.findOne({
+      _id: ObjectId(req.body.productId),
+    });
+    return res.status(200).json(getFreeAuctionProgress);
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+};
+
+module.exports.getExclusiveAuctionProgress = async (req, res) => {
+  try {
+    const getExclusiveAuctionProgress = ExclusiveAuctionProgress.findOne({
+      _id: ObjectId(req.body.productId),
+    });
+    return res.status(200).json(getExclusiveAuctionProgress);
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
