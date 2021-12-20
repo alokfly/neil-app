@@ -34,21 +34,16 @@ module.exports.getCoupon = async (req, res) => {
 module.exports.updateCoupon = async (req, res) => {
   let { couponCode, expiryDate, points, numberOfUserReedem } = req.body;
   try {
-    const checkCoupon = await Coupon.findOne({ couponCode });
-    if (!checkCoupon) {
-      const response = await Coupon.findByIdAndUpdate(
-        { _id: ObjectId(req.params.id) },
-        {
-          couponCode,
-          expiryDate,
-          points,
-          numberOfUserReedem,
-        }
-      );
-      res.status(200).send({ msg: "coupon successfully updated" });
-    } else {
-      res.status(404).json({ msg: "coupon code already exist" });
-    }
+    const response = await Coupon.findByIdAndUpdate(
+      { _id: ObjectId(req.params.id) },
+      {
+        couponCode,
+        expiryDate,
+        points,
+        numberOfUserReedem,
+      }
+    );
+    res.status(200).send({ msg: "coupon successfully updated" });
   } catch (error) {
     console.log(error);
   }
