@@ -1,6 +1,11 @@
 const { model, Schema } = require("mongoose");
 const winnerSchema = new Schema(
   {
+    productId: {
+      type: Schema.Types.ObjectId,
+      ref: "product",
+      required: true,
+    },
     username: {
       type: String,
       required: true,

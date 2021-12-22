@@ -206,14 +206,22 @@ module.exports.addWinner = async (req, res) => {
       .exec();
     const user = auctionWinner.bidingUser;
     const getWinner = user[user.length - 1];
-    const addWinner = await Winner.create({
-      username: getWinner.username,
-      productName: auctionWinner.productName,
-      size: auctionWinner.size,
-      bid: auctionWinner.bid,
-      image: auctionWinner.image,
-    });
-    return res.status(201).send({ msg: "Winner added", addWinner, getWinner });
+    const checkProductId = Winner.findOne({ productId });
+    if (!checkProductId) {
+      const addWinner = await Winner.create({
+        productId,
+        username: getWinner.username,
+        productName: auctionWinner.productName,
+        size: auctionWinner.size,
+        bid: auctionWinner.bid,
+        image: auctionWinner.image,
+      });
+      return res
+        .status(201)
+        .send({ msg: "Winner added", addWinner, getWinner });
+    } else {
+      return res.status(400).send({ msg: "already added" });
+    }
   } catch (error) {
     return res.status(500).send({ msg: error.message });
   }
