@@ -206,7 +206,7 @@ module.exports.addWinner = async (req, res) => {
       .exec();
     const user = auctionWinner.bidingUser;
     const getWinner = user[user.length - 1];
-    const checkProductId = Winner.findOne({ productId });
+    const checkProductId = await Winner.findOne({ productId });
     if (checkProductId === null) {
       const addWinner = await Winner.create({
         productId,
