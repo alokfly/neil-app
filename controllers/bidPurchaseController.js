@@ -230,7 +230,7 @@ module.exports.addWinner = async (req, res) => {
 module.exports.getWinner = async (req, res) => {
   try {
     const winner = await Winner.find({})
-      .sort({ created_at: -1 })
+      .sort({ _id: -1 })
       .exec(function (err, response) {
         return res.status(200).json(response);
       });
