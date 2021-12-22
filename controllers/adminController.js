@@ -38,10 +38,10 @@ module.exports.register = async (req, res) => {
       });
       return res.status(200).json({ msg: "Your account has been created" });
     } catch (error) {
-      return res.status(500).json({ errors: error });
+      return res.status(500).json({ msg: error.message });
     }
   } catch (error) {
-    return res.status(500).json({ errors: error });
+    return res.status(500).json({ msg: error.message });
   }
 };
 
