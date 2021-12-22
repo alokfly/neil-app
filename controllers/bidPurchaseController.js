@@ -213,7 +213,7 @@ module.exports.addWinner = async (req, res) => {
       bid: auctionWinner.bid,
       image: auctionWinner.image,
     });
-    return res.status(201).send({ msg: "Winner added", addWinner });
+    return res.status(201).send({ msg: "Winner added", addWinner, getWinner });
   } catch (error) {
     return res.status(500).send({ msg: error.message });
   }
